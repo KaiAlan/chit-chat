@@ -3,8 +3,11 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 
+const {generateMessage} = require('./utils/messages');
+// import { generateMessage } from './utils/messages';
+const {addUser, removeUser, getUser, getUsersInRoom} = require('./utils/user');
 
-let users = []
+
 
 const app = express();
 app.use(cors({
@@ -13,47 +16,74 @@ app.use(cors({
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-      origin: "http://127.0.0.1:5173"
+      origin: "*",
+      methods: ['GET', 'POST']
     }
   });
 
 
-io.on('connection', (socket) => {
-  console.log('User connected');
+  io.on('connection', (socket) => {
 
-  // Listen for incoming messages
-  socket.on('message', (message) => {
-    // console.log('Message:', message);
-    // Broadcast the message to all connected clients
-    io.emit('message', `${socket.id.substr(0,4)} : ${message}`);
+    // Listen on a 'join' event, which we will allocate the socket to a room on server
+    socket.on('join', ({username, room}, callback) => {
+      const {error, user} = addUser({ socketId: socket.id, username, room });
+  
+      // Acknowledging user joining a room
+      if(error) {
+        callback(error);
+        return;
+      }
+  
+      // Once a socket joins a room, then we can emit events to that room only
+      // io.to(room).emit or socket.broadcast.to(room).emit
+      socket.join(user.room);
+      
+      socket.emit('message', generateMessage('Admin', `Welcome ${user.username}!`));
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
+      
+      // Event for communicating changes in connections for the room
+      io.to(user.room).emit('roomData', {
+        users: getUsersInRoom(user.room)
+      });
+  
+      callback();
+    });
+    
+  
+    // Forward message to all connected clients
+    // implement event acknoledgement with client callback
+    socket.on('sendMessage', (message, callback) => {
+      try {
+        const user = getUser(socket.id);
+        if(!user) {
+          throw 'User not found!';
+        }
+  
+        io.to(user.room).emit('message', generateMessage(user.username, message));
+        callback();
+      } catch (error) {
+        callback(error.message);
+      }
+    });
+  
+  
+    // This is built-in socket.io event, all other clients should get message that current client disconnected
+    socket.on('disconnect', () => {
+      const user = removeUser(socket.id);
+  
+      if(user) {
+        io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`));
+        io.to(user.room).emit('roomData', {
+          users: getUsersInRoom(user.room)
+        });
+      }
+    });
   });
 
-  //  //Listens when a new user joins the server
-  //  socket.on('newUser', (data) => {
-  //   //Adds the new user to the list of users
-  //   users.push(data);
-  //   console.log(data);
-  //   //Sends the list of users to the client
-  //   io.emit('newUserResponse', users);
-  // });
 
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-
-    //  //Updates the list of users when a user disconnects from the server
-    //  users = users.filter((user) => user.socketID !== socket.id);
-    //  // console.log(users);
-     //Sends the list of users to the client
-     io.emit('newUserResponse', users);
-
-  });
-});
-
-
-app.get('/', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({
-    message: 'Hello world',
+    message: 'Server running peacefully',
   });
 });
 
