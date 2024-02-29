@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { Button } from "./ui/button";
 
 const JoinRoom = () => {
 
@@ -25,7 +26,7 @@ const JoinRoom = () => {
             <input type="text" placeholder="Enter room code" onChange={(e) => setRoomId(e.target.value)} className="bg-transparent w-4/5 border border-blue-500"/>
             <button className="flex justify-center items-center w-52 h-8 bg-blue-600 rounded-full">Join Room</button>
         </form>
-            <button onClick={() => navigate(`/${username}/room/${username}'s-room`)} className="flex justify-center items-center w-52 h-8 bg-blue-600 rounded-full">Create Room</button>
+        <Button onClick={() => navigate(`/${username}/room/${username}'s-room`)} className="flex justify-center items-center w-52 h-8 bg-blue-600 rounded-full">Create Room</Button>
     </div>
   )
 }
