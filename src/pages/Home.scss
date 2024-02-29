@@ -1,0 +1,27 @@
+
+
+.wave {
+  width: 800px;
+  height: 200px;
+}
+
+.wave:after {
+    content: '';
+    width: 70%;
+    position: absolute;
+    height: 300px;
+    display: block;
+    border-bottom: 60px solid #A725D4;
+    border-radius: 50%;
+    left: 50%;
+}
+
+.wave:before {
+    content: '';
+    width: 70%;
+    position: absolute;
+    height: 300px;
+    display: block;
+    border-top: 60px solid #A725D4;
+    border-radius: 50%;
+}

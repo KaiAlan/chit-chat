@@ -4,7 +4,7 @@ import ErrorPage from './error-page';
 import App from '../App';
 import Chat from '../components/Chat';
 import Room from '../components/Room';
-import JoinRoom from '../components/JoinRoom';
+import Home from '@/pages/Home';
 
 export const router = createBrowserRouter([
     {
@@ -14,7 +14,7 @@ export const router = createBrowserRouter([
       children: [
         {
             path: '/',
-            element: <JoinRoom />
+            element: <Home />
         },
         {
             path: "chat",
