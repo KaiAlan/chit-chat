@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button"
+
 import { Link } from "react-router-dom";
 import './Home.scss'
+import JoinRoomDialog from "@/components/JoinRoomDialog";
 
 const Home = () => {
   return (
@@ -32,8 +33,8 @@ const Home = () => {
         <span className=" inline-block max-w-[700px] text-center text-lg text-[#D9D9D9] md:leading-tight sm:text-xl px-3 py-1">Create rooms, chat, and connect in real-time. Once the room disappears, your words and data vanish too, leaving only the echo of shared moments.</span>
 
         <div className="flex justify-center items-center gap-5 my-5">
-        <Button className="bg-[#A725D4]">Create Room</Button>
-        <Button variant="outline" className=" bg-transparent">Join Room</Button>
+        <JoinRoomDialog isUserjoining={false}>Create Room</JoinRoomDialog>
+        <JoinRoomDialog isUserjoining={true}>Join Room</JoinRoomDialog>
 
         </div>
     </section>

@@ -2,7 +2,7 @@
 
 /* Firefox */
 * {
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scrollbar-color: var(--secondary) var(--scrollbarBg);
 }
 
