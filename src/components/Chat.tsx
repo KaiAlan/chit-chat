@@ -1,15 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import io from "socket.io-client";
+import { io, Socket }  from "socket.io-client";
+
+
+
 
 const Chat = () => {
-  const [socket, setSocket] = useState<any>(null);
+  const [socket, setSocket] = useState<any>();
   const [sending, setSending] = useState<any>(false);
   const [allMessages, setAllMessages] = useState<any>([]);
   const [allUsers, setAllUsers] = useState<any>([]);
   const [error, setError] = useState<Error>();
   const messageRef = useRef<any>("");
   const { roomid, username } = useParams();
+
+
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -23,9 +28,8 @@ const Chat = () => {
   }, [allMessages.length]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:3000");
+    const newSocket: Socket = io("http://localhost:3000");
     setSocket(newSocket);
-
     // Join a room with specific user
     newSocket.emit(
       "join",

@@ -23,8 +23,9 @@ const JoinRoom = () => {
         <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center gap-3">
             <input type="text" placeholder="Your name" onChange={(e) => setUsername(e.target.value)} className="bg-transparent w-4/5 border border-blue-500"/>
             <input type="text" placeholder="Enter room code" onChange={(e) => setRoomId(e.target.value)} className="bg-transparent w-4/5 border border-blue-500"/>
-            <button className="flex justify-center items-center w-52 h-8 bg-blue-600 rounded-full">Create Room</button>
+            <button className="flex justify-center items-center w-52 h-8 bg-blue-600 rounded-full">Join Room</button>
         </form>
+            <button onClick={() => navigate(`/${username}/room/${username}'s-room`)} className="flex justify-center items-center w-52 h-8 bg-blue-600 rounded-full">Create Room</button>
     </div>
   )
 }
