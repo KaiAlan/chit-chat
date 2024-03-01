@@ -51,7 +51,7 @@ const JoinRoomDialog = ({ children, isUserjoining }: Props) => {
     // if (data.username && !data.roomid) {
     //   data.roomid = `${data.username}'s-room`;
     // }
-    console.log(data);
+    // console.log(data);
     navigate(`/${data.username}/room/${data.roomid}`);
   };
 

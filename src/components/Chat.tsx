@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { io, Socket }  from "socket.io-client";
 
 
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 
 const Chat = () => {
@@ -10,9 +12,13 @@ const Chat = () => {
   const [sending, setSending] = useState<any>(false);
   const [allMessages, setAllMessages] = useState<any>([]);
   const [allUsers, setAllUsers] = useState<any>([]);
-  const [error, setError] = useState<Error>();
+  const [errorFromServer, setErrorFromServer] = useState<any>();
+
+
   const messageRef = useRef<any>("");
   const { roomid, username } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
 
 
@@ -39,7 +45,7 @@ const Chat = () => {
       },
       (error: Error) => {
         if (error) {
-          setError(error);
+          setErrorFromServer(error);
         }
       }
     );
@@ -58,7 +64,23 @@ const Chat = () => {
     return () => {
       newSocket.close();
     };
-  }, [username, error]);
+  }, [username]);
+
+  useEffect(() => {
+    if(errorFromServer) {
+      
+      toast({
+        variant: "destructive",
+        title: `Uh oh, ${errorFromServer.error}`,
+        description: "Use a different Username to Join the room.",
+        action: <ToastAction onClick={() => navigate(-1)} altText="Try again">Try again</ToastAction>,
+      })
+
+      setErrorFromServer(undefined);
+  }
+  
+  }, [errorFromServer])
+  
 
   const sendMessageHandler = (event: any) => {
     event.preventDefault();
@@ -135,6 +157,7 @@ const Chat = () => {
           </button>
         </form>
       </div>
+
     </div>
   );
 };

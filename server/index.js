@@ -30,8 +30,10 @@ const io = socketIo(server, {
   
       // Acknowledging user joining a room
       if(error) {
-        callback(error);
-        return;
+        return callback({
+          status: "Bad Request",
+          error
+        });
       }
   
       // Once a socket joins a room, then we can emit events to that room only

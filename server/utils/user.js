@@ -4,8 +4,8 @@ const users = [];
 
 const addUser = ({socketId, username, room}) => {
   // Clean the data
-  username = username.toLowerCase();
-  room = room.toLowerCase();
+  username = username.trim().toLowerCase();
+  room = room.trim().toLowerCase();
 
   // Validate the data
   if(!username || !room) {
