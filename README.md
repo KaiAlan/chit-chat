@@ -1,3 +1,12 @@
+## Currently under dev
+
+# Chit-Chat
+
+Introducing Chit-chat, the open-source hangout space built for genuine, private conversations that vanish like whispers in the wind. Create rooms, chat, and connect in real-time. Share ideas, laugh with friends, or spark meaningful discussions. Once the room disappears, your words and data vanish too, leaving only the echo of shared moments.
+
+<a href="https://ibb.co/ZN8QbH2"><img src="https://i.ibb.co/WsyrRDV/chit-chat.png" alt="chit-chat" border="0"></a>
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
