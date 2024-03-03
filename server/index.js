@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const {generateMessage} = require('./utils/messages');
 // import { generateMessage } from './utils/messages';
-const {addUser, removeUser, getUser, getUsersInRoom} = require('./utils/user');
+const {addUser, removeUser, getUser, getUsersInRoom, removeRoom} = require('./utils/user');
 
 
 
@@ -60,6 +60,8 @@ const io = socketIo(server, {
         if(!user) {
           throw 'User not found!';
         }
+
+        console.log(message)
   
         io.to(user.room).emit('message', generateMessage(user.username, message));
         callback();
@@ -81,6 +83,20 @@ const io = socketIo(server, {
       }
     });
   });
+
+  io.of("/").adapter.on("delete-room", (room) => {
+    removeRoom(room)
+    console.log(`room ${room} was deleted`);
+  });
+
+  io.of("/").adapter.on("create-room", (room) => {
+    console.log(`room ${room} was created`);
+  });
+
+  io.of("/").adapter.on("join-room", (room, id) => {
+    console.log(`socket ${id} has joined room ${room}`);
+  });
+
 
 
 app.get('/health', (req, res) => {

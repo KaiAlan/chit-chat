@@ -62,6 +62,10 @@ const Chat = () => {
 
     // Close the socket when user leaves the page
     return () => {
+
+      newSocket.emit('roomInactive', () => {
+        console.log('closing room')
+      })
       newSocket.close();
     };
   }, [username]);
@@ -100,6 +104,11 @@ const Chat = () => {
   const users = allUsers.map((user: any, idx: number) => (
     <li key={`user-${idx}`}>{user.username}</li>
   ));
+  
+  // useEffect(() => {
+  //   console.log(allMessages)
+
+  // },[allMessages])
 
   return (
     <div className="flex justify-between items-start w-full h-full">

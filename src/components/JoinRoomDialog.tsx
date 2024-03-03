@@ -52,7 +52,16 @@ const JoinRoomDialog = ({ children, isUserjoining }: Props) => {
     //   data.roomid = `${data.username}'s-room`;
     // }
     // console.log(data);
-    navigate(`/${data.username}/room/${data.roomid}`);
+
+    
+    const userJoiningURL = `/${data.username}/room/${data.roomid}`
+    // let userJoiningURL = `/${data.username}/room/${data.roomid}?isAdmin=true`
+    // if (isUserjoining) {
+    //   userJoiningURL = `/${data.username}/room/${data.roomid}?isAdmin=false`
+    // }
+
+    // navigate(isUserjoining ? `${userJoiningURL}/Admin/${isAdmin}` : `${userJoiningURL}/Admin/${isAdmin}`);
+    navigate(userJoiningURL);
   };
 
   return (

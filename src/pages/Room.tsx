@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Chat from "./Chat";
+import Chat from "../components/Chat";
 import { Toaster } from "@/components/ui/toaster";
 
 const Room = () => {

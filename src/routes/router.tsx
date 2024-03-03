@@ -3,8 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './error-page';
 import App from '../App';
 import Chat from '../components/Chat';
-import Room from '../components/Room';
-import Home from '@/pages/Home';
+// import Room from '../pages/Room';
+import Home from '@/pages/Home/Home';
+import RoomNew from '@/pages/Room/RoomNew';
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,9 @@ export const router = createBrowserRouter([
     },
     {
       path: ":username/room/:roomid",
-      element: <Room />,
-  },
+      // path: ":username/room?isAdmin=:isAdmin",
+      // path: ":username/room/:roomid?isAdmin=:isAdmin",
+      // element: <Room />,
+      element: <RoomNew />
+    },
 ]);

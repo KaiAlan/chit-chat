@@ -2,6 +2,8 @@
 // Not suitable for production builds but enough for demonstration
 const users = [];
 
+const rooms = [];
+
 const addUser = ({socketId, username, room}) => {
   // Clean the data
   username = username.trim().toLowerCase();
@@ -16,9 +18,15 @@ const addUser = ({socketId, username, room}) => {
 
   // Check for existing user
   const existingUser = users.find((user) => user.room === room && user.username === username);
+  const existingRoom = rooms.find((existsRoom) => existsRoom === room);
   if(existingUser) {
     return {
       error: 'Username is in use!'
+    };
+  }
+  if(existingRoom) {
+    return {
+      error: 'Room Id is in use!'
     };
   }
 
@@ -29,6 +37,8 @@ const addUser = ({socketId, username, room}) => {
     room
   };
 
+  rooms.push(room);
+
   users.push(user);
   return { user };
 };
@@ -38,6 +48,15 @@ const removeUser = (id) => {
 
   if(index !== -1) {
     return users.splice(index, 1)[0];
+  }
+};
+const removeRoom = (room) => {
+  const index = rooms.findIndex((roomToBeDroped) => roomToBeDroped === room);
+
+  if(index === undefined) return;
+
+  if(index !== -1) {
+    return rooms.splice(index, 1)[0];
   }
 };
 
@@ -55,5 +74,6 @@ module.exports = {
   addUser,
   removeUser,
   getUser,
-  getUsersInRoom
+  getUsersInRoom,
+  removeRoom
 };
