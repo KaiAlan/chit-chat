@@ -25,3 +25,16 @@
     border-top: 60px solid #A725D4;
     border-radius: 50%;
 }
+
+@media (width <= 1000px) {
+  .wave {
+    height: 200px;
+    width: 300px;
+  }
+}
+@media (width <= 500px) {
+  .wave {
+    height: 200px;
+    width: 200px;
+  }
+}
