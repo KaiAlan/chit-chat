@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react';
-// import { socket } from '@/lib/socket';
+import React, { useState, useRef } from 'react';
 
-const SendMessageInput = ({socket}: any) => {
+const SendMessageInput: React.FC<{ socket : any }> = ({socket}) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const messageRef = useRef<any>("");

@@ -16,6 +16,13 @@ const addUser = ({socketId, username, room, isAdmin}) => {
     };
   }
 
+  // Check if room is full or not
+  if(users.length === 10) {
+    return {
+      error: 'Room is full'
+    };
+  }
+
   // Check for existing user
   const existingUser = users.find((user) => user.room === room && user.username === username);
   const existingRoom = rooms.find((existsRoom) => existsRoom === room);

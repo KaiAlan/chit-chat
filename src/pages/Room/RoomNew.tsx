@@ -5,7 +5,7 @@ import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import Messages from "./Messages";
 import AllUsers from "./AllUsers";
 import SendMessageInput from "./SendMessageInput";
-// import ConnectionState  from "./ConnectionState";
+import ConnectionState  from "./ConnectionState";
 
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
@@ -33,6 +33,7 @@ type errorFromServer = {
 
 const RoomNew = () => {
     const [socket, setSocket] = useState<Socket>();
+    const [isConnected, setIsConnected] = useState(false)
     const [allMessages, setAllMessages] = useState<messageType[]>([]);
     const [allUsers, setAllUsers] = useState<userType[]>([]);
     const [errorFromServer, setErrorFromServer] = useState<errorFromServer>();
@@ -48,6 +49,7 @@ const RoomNew = () => {
     useEffect(() => {
         const newSocket: Socket = io(URL);
         setSocket(newSocket);
+        setIsConnected(true)
         // Join a room with specific user
         newSocket.emit(
           "join",
@@ -78,6 +80,7 @@ const RoomNew = () => {
         // Close the socket when user leaves the page
         return () => {
           newSocket.close();
+          setIsConnected(false)
         };
     }, [username, roomid]);
 
@@ -94,6 +97,7 @@ const RoomNew = () => {
           })
 
           socket?.close();
+          setIsConnected(false)
           setErrorFromServer(undefined);
         }
     }, [errorFromServer])
@@ -102,7 +106,7 @@ const RoomNew = () => {
   return (
     <section>
     <div className="flex flex-col justify-center items-center h-screen w-full text-white bg-black">
-        {/* <ConnectionState isConnected={isConnected} /> */}
+        <ConnectionState isConnected={isConnected} />
         <AllUsers users={allUsers} />
         <Messages messages={allMessages} />
         <SendMessageInput socket={socket} />
