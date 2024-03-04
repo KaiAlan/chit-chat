@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+require('dotenv').config();
 
 const {generateMessage} = require('./utils/messages');
 // import { generateMessage } from './utils/messages';
@@ -103,7 +104,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-const PORT = 3000;
+const PORT = process.env.DEPLOYMENT_LINK || 4000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
