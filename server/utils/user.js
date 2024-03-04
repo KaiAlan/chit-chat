@@ -4,7 +4,7 @@ const users = [];
 
 const rooms = [];
 
-const addUser = ({socketId, username, room}) => {
+const addUser = ({socketId, username, room, isAdmin}) => {
   // Clean the data
   username = username.trim().toLowerCase();
   room = room.trim().toLowerCase();
@@ -24,10 +24,13 @@ const addUser = ({socketId, username, room}) => {
       error: 'Username is in use!'
     };
   }
-  if(existingRoom) {
-    return {
-      error: 'Room Id is in use!'
-    };
+
+  if(isAdmin === 'true'){
+    if(existingRoom) {
+      return {
+        error: 'Room Id is in use!'
+      };
+    }
   }
 
   // Store user

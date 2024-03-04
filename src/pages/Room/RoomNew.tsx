@@ -1,6 +1,6 @@
 import { io, Socket }  from "socket.io-client";
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 
 import Messages from "./Messages";
 import AllUsers from "./AllUsers";
@@ -37,22 +37,24 @@ const RoomNew = () => {
     const [allUsers, setAllUsers] = useState<userType[]>([]);
     const [errorFromServer, setErrorFromServer] = useState<errorFromServer>();
 
-    const { roomid, username, isAdmin } = useParams();
+    const { roomid, username } = useParams();
+    const [searchParams] = useSearchParams();
+    const isAdmin = searchParams.get("isAdmin");
     const navigate = useNavigate();
     const { toast } = useToast();
 
-    console.log(isAdmin)
+    
 
     useEffect(() => {
         const newSocket: Socket = io(URL);
         setSocket(newSocket);
-
         // Join a room with specific user
         newSocket.emit(
           "join",
           {
             username: username,
             room: roomid,
+            isAdmin: isAdmin,
           },
           (error: errorFromServer) => {
             if (error) {
@@ -91,6 +93,7 @@ const RoomNew = () => {
             action: <ToastAction onClick={() => navigate(-1)} altText="Try again">Try again</ToastAction>,
           })
 
+          socket?.close();
           setErrorFromServer(undefined);
         }
     }, [errorFromServer])

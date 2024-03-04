@@ -55,13 +55,15 @@ const JoinRoomDialog = ({ children, isUserjoining }: Props) => {
 
     
     const userJoiningURL = `/${data.username}/room/${data.roomid}`
-    // let userJoiningURL = `/${data.username}/room/${data.roomid}?isAdmin=true`
-    // if (isUserjoining) {
-    //   userJoiningURL = `/${data.username}/room/${data.roomid}?isAdmin=false`
-    // }
+    let isAdmin: boolean = true;
+    if (isUserjoining) {
+      isAdmin = false
+    }
 
-    // navigate(isUserjoining ? `${userJoiningURL}/Admin/${isAdmin}` : `${userJoiningURL}/Admin/${isAdmin}`);
-    navigate(userJoiningURL);
+    navigate({
+      pathname: userJoiningURL,
+      search: `?isAdmin=${isAdmin}`
+    });
   };
 
   return (

@@ -25,8 +25,8 @@ const io = socketIo(server, {
   io.on('connection', (socket) => {
 
     // Listen on a 'join' event, which we will allocate the socket to a room on server
-    socket.on('join', ({username, room}, callback) => {
-      const {error, user} = addUser({ socketId: socket.id, username, room });
+    socket.on('join', ({username, room, isAdmin}, callback) => {
+      const {error, user} = addUser({ socketId: socket.id, username, room, isAdmin });
   
       // Acknowledging user joining a room
       if(error) {
@@ -60,8 +60,6 @@ const io = socketIo(server, {
         if(!user) {
           throw 'User not found!';
         }
-
-        console.log(message)
   
         io.to(user.room).emit('message', generateMessage(user.username, message));
         callback();
