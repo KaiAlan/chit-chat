@@ -1,0 +1,18 @@
+
+.box2
+{
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 10% 98%, 10% 20%);
+    margin: 0 auto;
+}
+
+.flt_svg {
+    visibility: hidden; 
+    position: absolute;
+    width: 0px;
+    height: 0px;
+}
+
+.box_parent
+{
+    filter: url('#flt_tag');
+}

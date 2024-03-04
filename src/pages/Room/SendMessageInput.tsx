@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
 
+import happy from '../../assets/Happy.svg';
+import sent from '../../assets/Sent.svg'
+
 const SendMessageInput: React.FC<{ socket : any }> = ({socket}) => {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -21,23 +24,31 @@ const SendMessageInput: React.FC<{ socket : any }> = ({socket}) => {
   };
 
   return (
-    <div>
+    <div className='flex justify-center items-center w-full gap-3 my-2'>
+
+        <div className='w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 from-10% via-purple-500 via-30% to-pink-500 to-90%'></div>
         <form
           onSubmit={sendMessageHandler}
-          className="flex justify-center items-center gap-3"
+          className="flex justify-center items-center bg-[#1C1C24] border border-[#1A262F] rounded-md w-4/5 gap-1"
         >
+          <button
+            className='flex justify-center items-center m-2'
+          >
+
+          <img src={happy} alt="Emoji button" />
+          </button>
           <input
             type="text"
             placeholder="Type a message..."
             ref={messageRef}
-            className="bg-transparent w-4/5 border border-blue-500"
+            className="bg-transparent w-4/5 border-none focus:border-none focus:outline-none"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="flex justify-center items-center w-20 h-7 border rounded-full m-2 bg-blue-500 hover:bg-blue-900"
+            className="flex justify-center items-center m-2"
           >
-            Send
+            <img src={sent} alt="Send button" />
           </button>
         </form>
     </div>

@@ -2,6 +2,7 @@
 const generateMessage = (user, text) => {
   const hour = new Date().getHours();
   const minutes = new Date().getMinutes()
+  // const seconds = new Date().getSeconds()
 
     return {
       text,

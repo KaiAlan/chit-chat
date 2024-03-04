@@ -3,10 +3,11 @@ import { userType } from "./RoomNew";
 
 const AllUsers: React.FC<{ users: userType[] }> = ( { users } ) => {
   return (
-    <div>
+    <div className="flex flex-col gap-2 text-[#1690AF] m-10">
       <ul>
+        <span className="font-bold text-white">Users Joind : </span>
         {users.map((user: userType, index: number) => (
-          <li key={index}>{user.username}</li>
+          <li className="px-10" key={index}>{user.username}</li>
         ))}
       </ul>
     </div>

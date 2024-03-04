@@ -63,7 +63,7 @@ const removeUser = (id) => {
 const removeRoom = (room) => {
   const index = rooms.findIndex((roomToBeDroped) => roomToBeDroped === room);
 
-  if(index === undefined) return;
+  if(index === -1) return;
 
   if(index !== -1) {
     return rooms.splice(index, 1)[0];
