@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
 import { messageType } from "./RoomNew";
 import SendMessageInput from "./SendMessageInput";
@@ -30,7 +30,7 @@ const TopBar: React.FC<{ roomid: string | undefined; joinedUsers: number }> = ( 
 
   return (
     <div
-      className='flex justify-between items-center bg-[#1A262F] bg-opacity-50 w-full h-20 px-5 gap-3 absolute top-0 z-10'
+      className='flex justify-between items-center bg-[#1A262F] bg-opacity-50 w-full h-20 px-5 gap-3'
       style={{backdropFilter: 'blur(20px)'}}
     >
       <div className="flex justify-center items-center gap-2">
@@ -54,7 +54,21 @@ const Messages: React.FC<{ messages: messageType[]; socket: any; joinedUsers: nu
   socket,
   joinedUsers
 }) => {
+
+
   const { username, roomid } = useParams();
+  
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messages.length) {
+      ref.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [messages.length]);
+  
   return (
     <div
       className="h-screen w-full sm:w-3/5 overflow-hidden flex flex-col justify-between items-start bg-[#15161D] border border-[#252329] relative"
@@ -100,6 +114,7 @@ const Messages: React.FC<{ messages: messageType[]; socket: any; joinedUsers: nu
             )}
           </>
         ))}
+      <div ref={ref} />
       </div>
       <SendMessageInput socket={socket} />
     </div>
