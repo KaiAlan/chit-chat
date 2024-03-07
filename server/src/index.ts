@@ -97,6 +97,8 @@ app.get('/health', (req: Request, res: Response) => {
         message: 'Server running peacefully',
     })
 })
+
+
 app.get('/', (req: Request, res: Response) => {
     res.render('pages/index')
 })
