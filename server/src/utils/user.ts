@@ -69,5 +69,33 @@ export function addUser({ socketId, username, room, isAdmin }: {
     Rooms.push({ roomid: room });
 
     Users.push(user);
-    return {user} ;
+    return { user };
 }
+
+export const removeUser = (id: string) => {
+    const index = Users.findIndex((user) => user.id === id);
+
+    if (index !== -1) {
+        return Users.splice(index, 1)[0];
+    }
+};
+
+export const removeRoom = (room: string) => {
+    const index = Rooms.findIndex((roomToBeDroped) => roomToBeDroped.roomid === room);
+
+    if (index === -1) return;
+
+    if (index !== -1) {
+        return Rooms.splice(index, 1)[0];
+    }
+};
+
+export const getUser = (id: string) => {
+    const user = Users.find((user) => user.id === id);
+    return user;
+};
+
+export const getUsersInRoom = (room: string) => {
+    const usersInRoom = Users.filter(user => user.room === room);
+    return usersInRoom;
+};

@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 // import { CheckIfRoomInactive } from "@/lib/utils";
 
+import {ServerToClientEvents, ClientToServerEvents} from '../../../types/socketTypes'
 const URL = import.meta.env.VITE_SERVER_URL;
 
 export type messageType = {
@@ -46,10 +47,11 @@ const RoomNew = () => {
   
 
   useEffect(() => {
-    const newSocket: Socket = io(URL);
+    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL);
     setSocket(newSocket);
     setIsConnected(true);
     // Join a room with specific user
+    if(!username || !roomid || !isAdmin) return;
     newSocket.emit(
       "join",
       {
@@ -57,7 +59,7 @@ const RoomNew = () => {
         room: roomid,
         isAdmin: isAdmin,
       },
-      (error: errorFromServer) => {
+      (error: errorFromServer | void) => {
         if (error) {
           setErrorFromServer(error);
         }

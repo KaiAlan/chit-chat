@@ -1,31 +1,17 @@
-import express, {Request, Response} from 'express';
+import express, {type Request, type Response} from 'express';
 import http from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import  { addUser }  from './utils/user';
-import { generateMessage } from './utils/messages'
+import  { addUser, getUsersInRoom, removeUser, getUser }  from './utils/user.js';
+import { generateMessage } from './utils/messages.js'
+
+import type {ServerToClientEvents, ClientToServerEvents} from '../../types/socketTypes.js'
 
 dotenv.config();
 
-interface ServerToClientEvents {
 
-    join: (username: string, room: string, isAdmin: string, callback: () => any) => any;
-  }
-  
-  interface ClientToServerEvents {
-    hello: () => void;
-  }
-  
-  interface InterServerEvents {
-    ping: () => void;
-  }
-  
-  interface SocketData {
-    name: string;
-    age: number;
-  }
 
 const app = express();
 app.use(cors({
@@ -36,12 +22,7 @@ app.set('view engine', 'ejs');
 
 // WebSocket Connection
 
-const io = new Server<
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData
->(
+const io = new Server(
     server, {
         cors: {
             origin: '*',
@@ -50,10 +31,10 @@ const io = new Server<
     }
 );
 
-io.on('connection', (socket: any) => {
+io.on('connection', (socket: Socket<ClientToServerEvents, ServerToClientEvents>) => {
 
     // Listen on a 'join' event, which we will allocate the socket to a room on server
-    socket.on("join", ({username, room, isAdmin}: { username: string, room: string, isAdmin: string }, callback: any) => {
+    socket.on("join", ({username, room, isAdmin}, callback) => {
 
         const {error, user} = addUser({ socketId: socket.id, username, room, isAdmin });
 
@@ -72,24 +53,40 @@ io.on('connection', (socket: any) => {
       socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
       
       // Event for communicating changes in connections for the room
-    //   io.to(user.room).emit('roomData', {
-    //     users: getUsersInRoom(user.room)
-    //   });
+      io.to(user.room).emit('roomData', {
+        users: getUsersInRoom(user.room)
+      });
 
         callback();
     });
 
+    // Forward message to all connected clients
+    // implement event acknoledgement with client callback
+    socket.on('sendMessage', (message, callback) => {
+      try {
+        const user = getUser(socket.id);
+        if(!user) {
+          return callback('User not found');
+        }
+  
+        io.to(user.room).emit('message', generateMessage(user.username, message));
+        callback();
+      } catch (error: any) {
+        callback(error.message);
+      }
+    });
+
     // This is built-in socket.io event, all other clients should get message that current client disconnected
-    // socket.on('disconnect', () => {
-    //     const user = removeUser(socket.id);
+    socket.on('disconnect', () => {
+        const user = removeUser(socket.id);
     
-    //     if(user) {
-    //       io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`));
-    //       io.to(user.room).emit('roomData', {
-    //         users: getUsersInRoom(user.room)
-    //       });
-    //     }
-    //   });
+        if(user) {
+          io.to(user.room).emit('message', generateMessage('Admin', `${user.username} has left!`));
+          io.to(user.room).emit('roomData', {
+            users: getUsersInRoom(user.room)
+          });
+        }
+      });
 })
 
 app.get('/health', (req: Request, res: Response) => {
