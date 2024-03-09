@@ -15,7 +15,7 @@ import {ServerToClientEvents, ClientToServerEvents} from '../../../types/socketT
 import { userType } from '../../../types/userTypes'
 const URL = import.meta.env.VITE_SERVER_URL;
 
-type messageType = {
+export type messageType = {
   text: string;
   user: string;
   createdAt: string;

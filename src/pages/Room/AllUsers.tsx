@@ -1,5 +1,5 @@
 import React from "react";
-import { userType } from "./RoomNew";
+import { userType } from "../../../types/userTypes";
 
 const AllUsers: React.FC<{ users: userType[] }> = ( { users } ) => {
   return (
