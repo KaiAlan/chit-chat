@@ -1,4 +1,4 @@
-import { type userType } from '../../../types/userTypes'
+import { type userType } from '../../types/userTypes'
 
 type RoomType = {
     roomid: string;

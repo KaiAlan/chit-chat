@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import  { addUser, getUsersInRoom, removeUser, getUser, removeRoom }  from './utils/user.js';
 import { generateMessage } from './utils/messages.js'
 
-import {type ServerToClientEvents, type ClientToServerEvents} from '../../types/socketTypes.js'
+import {type ServerToClientEvents, type ClientToServerEvents} from '../types/socketTypes.js'
 
 dotenv.config();
 
