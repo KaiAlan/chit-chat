@@ -11,8 +11,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 // import { CheckIfRoomInactive } from "@/lib/utils";
 
-import {ServerToClientEvents, ClientToServerEvents} from '../../../types/socketTypes'
-import { userType } from '../../../types/userTypes'
+import {ServerToClientEvents, ClientToServerEvents} from '../../../server/types/socketTypes'
+import { userType } from '../../../server/types/userTypes'
 const URL = import.meta.env.VITE_SERVER_URL;
 
 export type messageType = {
