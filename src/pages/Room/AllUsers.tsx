@@ -1,5 +1,5 @@
 import React from "react";
-import { userType } from "../../../types/userTypes";
+import { userType } from "../../../server/types/userTypes";
 
 const AllUsers: React.FC<{ users: userType[] }> = ( { users } ) => {
   return (
