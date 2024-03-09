@@ -11,23 +11,22 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 // import { CheckIfRoomInactive } from "@/lib/utils";
 
+import {ServerToClientEvents, ClientToServerEvents} from '../../../types/socketTypes'
+import { userType } from '../../../types/userTypes'
 const URL = import.meta.env.VITE_SERVER_URL;
 
-export type messageType = {
+type messageType = {
   text: string;
   user: string;
   createdAt: string;
 };
 
-export type userType = {
-  id: string;
-  username: string;
-  room: string;
-};
-
 type errorFromServer = {
-  status?: string;
-  error: string;
+  status: string;
+  error: {
+    errorReason: string,
+    errorSolution: string,
+  };
 };
 
 const RoomNew = () => {
@@ -46,10 +45,11 @@ const RoomNew = () => {
   
 
   useEffect(() => {
-    const newSocket: Socket = io(URL);
+    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL);
     setSocket(newSocket);
     setIsConnected(true);
     // Join a room with specific user
+    if(!username || !roomid || !isAdmin) return;
     newSocket.emit(
       "join",
       {
@@ -57,7 +57,7 @@ const RoomNew = () => {
         room: roomid,
         isAdmin: isAdmin,
       },
-      (error: errorFromServer) => {
+      (error: errorFromServer | void) => {
         if (error) {
           setErrorFromServer(error);
         }
@@ -84,12 +84,12 @@ const RoomNew = () => {
 
   useEffect(() => {
     if (errorFromServer) {
-      console.log(errorFromServer.error);
+      // console.log(errorFromServer.error);
 
       toast({
         variant: "destructive",
-        title: `Uh oh, ${errorFromServer.error}`,
-        description: "Use a different Username to Join the room.",
+        title: `Uh oh, ${errorFromServer.error.errorReason}`,
+        description: `${errorFromServer.error.errorSolution}`,
         action: (
           <ToastAction onClick={() => navigate(-1)} altText="Try again">
             Try again
