@@ -6,6 +6,8 @@ import Chat from '../components/Chat';
 // import Room from '../pages/Room';
 import Home from '@/pages/Home/Home';
 import RoomNew from '@/pages/Room/RoomNew';
+import GamesPage from '@/pages/Games';
+import AboutUsPage from '@/pages/AboutUs';
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +22,14 @@ export const router = createBrowserRouter([
         {
             path: "chat",
             element: <Chat />,
+        },
+        {
+          path: 'games',
+          element: <GamesPage />
+        },
+        {
+          path: 'about-us',
+          element: <AboutUsPage />
         },
         
       ]

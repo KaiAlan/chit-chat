@@ -13,7 +13,7 @@ const Home = () => {
     <div className="wave absolute left-0 top-0" style={{filter: 'blur(80px)'}}  />
 
 
-    <section className="flex flex-col justify-center items-center h-full w-full gap-5 mt-40 mb-20 mx-auto ">
+    <section className="flex flex-col justify-center items-center h-full w-full gap-5 mt-40 mb-20 mx-auto z-10">
 
 
         <div className="relative">
