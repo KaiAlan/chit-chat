@@ -4,7 +4,7 @@ import Footer from "./components/Footer/Footer";
 
 const App = () => {
   return (
-    <main className="flex flex-col justify-center items-center min-h-screen w-full bg-[#15161D] text-white antialiased">
+    <main className="flex flex-col justify-center items-center min-h-screen max-h-screen w-full bg-black text-white antialiased relative select-none">
 
       <Navbar />
 

@@ -1,24 +1,25 @@
 import { Link } from "react-router-dom";
 
-import logo from "../../assets/Chit-chat-logo.svg";
+import logo from "../../assets/chit-chat-logo.svg";
 import menu from "../../assets/Menu Squared.svg";
 import { useState } from "react";
 
 const navigationLink = [
   { path: "/", name: "Home" },
-  { path: "/games", name: "Games" },
   { path: "/about-us", name: "About Us" },
+  { path: "/chat", name: "Chat" },
+  { path: "/games", name: "Games" },
 ];
 
 const Navbar = () => {
   const [menuOpened, setMenuOpened] = useState(false);
   return (
-    <div className="flex justify-start items-center w-full sm:px-10 top-0 sticky z-20 left-0 bg-[#15161D] bg-opacity-5 backdrop-blur-lg border-b-2 border-[#15161D] border-opacity-5">
+    <div className="flex justify-start items-center w-full sm:px-10 top-0 absolute h-20 z-20 left-0 bg-black border-b-zinc-900 border-x-0 border-t-0 border border-opacity-50 overflow-hidden">
       {!menuOpened && (
         <>
         <img
           src={menu}
-          alt="Chit-Chat-logo"
+          alt="menu"
           className="h-12 md:hidden px-5"
           onClick={() => setMenuOpened(!menuOpened)}
         />
@@ -39,7 +40,7 @@ const Navbar = () => {
         </div>
       )}
 
-      <ul className="hidden md:flex justify-center items-center w-full h-20 gap-10 mx-auto">
+      <ul className="hidden md:flex justify-center items-center w-full h-20 gap-20 font-light mx-auto">
         {navigationLink.map(({ path, name }, index) => (
           <li key={index}>
             <Link to={path}>{name}</Link>

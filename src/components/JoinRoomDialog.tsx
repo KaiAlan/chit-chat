@@ -70,7 +70,7 @@ const JoinRoomDialog = ({ children, isUserjoining }: Props) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className={isUserjoining ? "bg-transparent" : "bg-[#A725D4]"}
+          className={isUserjoining ? "bg-transparent" : "bg-fuchsia-600 hover:bg-fuchsia-950"}
           variant={!isUserjoining ? "default" : "outline"}
         >
           {children}
